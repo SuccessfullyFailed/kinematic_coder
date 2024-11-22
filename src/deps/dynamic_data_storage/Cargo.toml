@@ -1,0 +1,12 @@
+[package]
+name = "dynamic_data_storage"
+version = "0.1.0"
+edition = "2021"
+
+[build-dependencies]
+rust_build_buddy = { git="https://gitlab.com/RenzoGerritzenSaxion/rust-build-buddy.git", version="0.1.15" }
+
+[dev-dependencies]
+serial_test = "3.0.0"
+
+[dependencies]

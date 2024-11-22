@@ -1,0 +1,16 @@
+[package]
+name = "glass_panel"
+version = "0.1.10"
+edition = "2021"
+
+[build-dependencies]
+rust_build_buddy = { git = "https://gitlab.com/RenzoGerritzenSaxion/rust-build-buddy.git", version = "0.1.1"}
+
+[dev-dependencies]
+cargo-llvm-cov = "0.6.5"
+
+[dependencies]
+minifb = "0.23.0"
+image = "0.24.8"
+cargo-llvm-cov = "0.6.5"
+rusttype = "0.9.3"

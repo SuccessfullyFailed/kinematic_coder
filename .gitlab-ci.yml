@@ -1,0 +1,44 @@
+
+stages:
+  - setup
+  - test
+
+variables:
+  CARGO_HOME: "$CI_PROJECT_DIR/target/.cargo"
+
+cache:
+  key: "$CI_COMMIT_REF_SLUG"
+  paths:
+    - target/
+
+install_dependencies:
+  stage: setup
+  image: rust:latest
+  script:
+    - cd $CI_PROJECT_DIR
+    - export BUILD_SCRIPT_TARGETS=none
+    - cargo install cargo-llvm-cov
+    - cargo build --release
+
+unit_tests:
+  stage: test
+  image: rust:latest
+  dependencies:
+    - install_dependencies
+  script:
+    - cd $CI_PROJECT_DIR
+    - export BUILD_SCRIPT_TARGETS=none
+    - cargo test --release --workspace # Not running tests before using llvm seems to let llvm return 0
+
+quality_test:
+  stage: test
+  image: rust:latest
+  dependencies:
+    - install_dependencies
+  script:
+    - cd $CI_PROJECT_DIR
+    - export BUILD_SCRIPT_TARGETS=quality_validation
+    - cargo build --release
+    # It unfortunately appears to be impossible to pass clippy between stages due to changes in toolchain and the location of clippy, so install it here
+    - rustup component add clippy
+    - cargo clippy --release --workspace -- -D warnings
